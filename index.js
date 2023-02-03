@@ -24,12 +24,7 @@ const generateText = async () => {
 
     let result = response.data.choices[0].text;
 
-    //Running task every 24 hours
-    let job = new CronJob("0 0 * * *", () => {
-      tweet(result);
-    });
-
-    job.start();
+    tweet(result);
 
   } catch (error) {
     if (error.response) {
@@ -41,7 +36,12 @@ const generateText = async () => {
   }
 };
 
-generateText();
+ //Running task every 24 hours
+let job = new CronJob("0 0 * * *", () => {
+  generateText();
+});
+
+job.start();
 
 //Tweet
 const tweet = async (text) => {
